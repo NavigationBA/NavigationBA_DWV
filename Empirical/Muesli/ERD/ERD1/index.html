@@ -1,0 +1,4010 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Data Wrangling & Visualization">
+      
+      
+      
+        <link rel="canonical" href="https://NavigationBA.github.io/Navigation_DWV/Empirical/Muesli/ERD/ERD1/">
+      
+      
+        <link rel="prev" href="../../Introduction/Introduction/">
+      
+      
+        <link rel="next" href="../../../../Practice/Topic00/Practice00_01/Practice00_01/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>🔎 Muesli - ERD & SQL 1 - Data Wrangling & Visualization</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#muesli-erd-sql-1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../../.." title="Data Wrangling &amp; Visualization" class="md-header__button md-logo" aria-label="Data Wrangling & Visualization" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Data Wrangling & Visualization
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              🔎 Muesli - ERD & SQL 1
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="blue"  aria-label="切换主题"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换主题" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="blue"  aria-label="切换主题"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换主题" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/NavigationBA/NavigationBA_DWV" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../Topics/Topic01/Topic01_00/Topic01_00/" class="md-tabs__link">
+          
+  
+  
+  Topics
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../Cases/Topic01/Case01_00/Case01_00/" class="md-tabs__link">
+          
+  
+  
+  Case Study
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../Introduction/Introduction/" class="md-tabs__link">
+          
+  
+  
+  Empirical Analysis
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../Practice/Topic00/Practice00_01/Practice00_01/" class="md-tabs__link">
+          
+  
+  
+  Practice Question
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="Data Wrangling &amp; Visualization" class="md-nav__button md-logo" aria-label="Data Wrangling & Visualization" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Data Wrangling & Visualization
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/NavigationBA/NavigationBA_DWV" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Topics
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Topics
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Topic 1 - Data & Business Decision Making
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Topic 1 - Data & Business Decision Making
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Topics/Topic01/Topic01_00/Topic01_00/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ✴️ Topic 1 Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Topics/Topic01/Topic01_01/Topic01_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ✅ Topic 1.1 - Data Analysis & Decision Making
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Topics/Topic01/Topic01_02/Topic01_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ✅ Topic 1.2 - Database Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Topics/Topic01/Topic01_03/Topic01_03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ✅ Topic 1.3 - SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Topics/Topic01/Topic01_04/Topic01_04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ✅ Topic 1.4 - Data Quality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Topics/Topic01/Extension01_01/Extension01_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ☑️ Topic 1 Extension 1 - Evidence-Based Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Topic 2 - Data Visualization
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Topic 2 - Data Visualization
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Topics/Topic02/Topic02_00/Topic02_00/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ✴️ Topic 2 Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Topics/Topic02/Topic02_01/Topic02_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ✅ Topic 2.1 - Data Visualization Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Topics/Topic02/Topic02_02/Topic02_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ✅ Topic 2.2 - Evaluating Data Visualization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Topics/Topic02/Topic02_03/Topic02_03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ✅ Topic 2.3 - Designing Interactive Dashboards & Periodic Reports
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Topics/Topic02/Topic02_04/Topic02_04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ✅ Topic 2.4 - Tableau for Data Visualization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Topics/Topic02/Extension02_01/Extension02_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ☑️ Topic 2 Extension 1 - Financial Times Visual Vocabulary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Topics/Topic02/Extension02_02/Extension02_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ☑️ Topic 2 Extension 2 - Evergreen's Data Visualization Checklist
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Topics/Topic02/Extension02_03/Extension02_03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ☑️ Topic 2 Extension 3 - International Business Communication Standards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Topic 3 - Data Analysis with Python
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Topic 3 - Data Analysis with Python
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Topics/Topic03/Topic03_00/Topic03_00/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ✴️ Topic 3 Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Topics/Topic03/Topic03_01/Topic03_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ✅ Topic 3.1 - Python for General Purpose Programming
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Topics/Topic03/Topic03_02/Topic03_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ✅ Topic 3.2 - Python & Pandas Basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Topics/Topic03/Topic03_03/Topic03_03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ✅ Topic 3.3 - Special Cases in Python
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Case Study
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Case Study
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Topic 1 - Data & Business Decision Making
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Topic 1 - Data & Business Decision Making
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Cases/Topic01/Case01_00/Case01_00/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🔄 Case Study 1.0 - Topic 1 General Questions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Cases/Topic01/Case01_01/Case01_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🔄 Case Study 1.1 - The Misconnecting Passengers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Cases/Topic01/Case01_02/Case01_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🔄 Case Study 1.2 - ERD & SQL - Movie
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Cases/Topic01/Case01_03/Case01_03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🔄 Case Study 1.3 - ERD & SQL - GetGoing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Cases/Topic01/Case01_04/Case01_04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🔄 Case Study 1.4 - ERD & SQL - Airline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Cases/Topic01/Case01_05/Case01_05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🔄 Case Study 1.5 - ERD & SQL - HSX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Topic 2 - Data Visualization
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Topic 2 - Data Visualization
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Cases/Topic02/Case02_01/Case02_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🔄 Case Study 2.1 - Evaluating Data Visualization 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Cases/Topic02/Case02_02/Case02_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🔄 Case Study 2.2 - Evaluating Data Visualization 2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Cases/Topic02/Case02_03/Case02_03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🔄 Case Study 2.3 - Evaluating Data Visualization 3
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Cases/Topic02/Case02_04/Case02_04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🔄 Case Study 2.4 - Evaluating Data Visualization 4
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Empirical Analysis
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Empirical Analysis
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Empirical Analysis - Muesli
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Empirical Analysis - Muesli
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Introduction/Introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🔎 Muesli - Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🔎 Muesli - ERD & SQL 1
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    🔎 Muesli - ERD & SQL 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="Content">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Content
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-erd-understanding-and-operational-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. ERD Understanding and Operational Analysis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. ERD Understanding and Operational Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-assertions-about-the-erd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (1) Assertions about the ERD
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-split-pricing-scenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (2) Split Pricing Scenario
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-employee-tracking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (3) Employee Tracking
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-sql-querying" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. SQL Querying
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. SQL Querying">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-purchasing-costs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (1) Purchasing Costs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-expenditures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (2) Expenditures
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-current-inventory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (3) Current Inventory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-weekly-sales" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (4) Weekly Sales
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-planned-future-production" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (5) Planned Future Production
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-undelivered-raw-materials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (6) Undelivered Raw Materials
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-balance-sheet-balances-as-of-a-certain-date" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (7) Balance Sheet Balances as of a Certain Date
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Analysis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-popular-products" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (1) Popular products
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-inventory-planning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (2) Inventory Planning
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Practice Question
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Practice Question
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Topic 0 - General Questions
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Topic 0 - General Questions
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Practice/Topic00/Practice00_01/Practice00_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ✏️ Practice 0.1 - General Questions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Practice/Topic00/Practice00_02/Practice00_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ✏️ Practice 0.2 - General Questions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Practice/Topic00/Practice00_03/Practice00_03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ✏️ Practice 0.3 - General Questions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Practice/Topic00/Practice00_04/Practice00_04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ✏️ Practice 0.4 - General Questions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Practice/Topic00/Practice00_05/Practice00_05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ✏️ Practice 0.5 - General Questions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Practice/Topic00/Practice00_06/Practice00_06/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ✏️ Practice 0.6 - General Questions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Practice/Topic00/Practice00_07/Practice00_07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ✏️ Practice 0.7 - General Questions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Topic 1 - Data & Business Decision Making
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Topic 1 - Data & Business Decision Making
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Practice/Topic01/Practice01_01/Practice01_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ✏️ Practice 1.1 - ERD & SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Practice/Topic01/Practice01_02/Practice01_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ✏️ Practice 1.2 - ERD & SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Practice/Topic01/Practice01_03/Practice01_03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ✏️ Practice 1.3 - ERD & SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Practice/Topic01/Practice01_04/Practice01_04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ✏️ Practice 1.4 - ERD & SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Topic 2 - Data Visualization
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Topic 2 - Data Visualization
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Practice/Topic02/Practice02_01/Practice02_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ✏️ Practice 2.1 - Evaluating Data Visualization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Practice/Topic02/Practice02_02/Practice02_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ✏️ Practice 2.2 - Evaluating Data Visualization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Topic 3 - Data Visualization
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Topic 3 - Data Visualization
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Practice/Topic03/Practice03_01/Practice03_01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ✏️ Practice 3.1 - Python
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Practice/Topic03/Practice03_02/Practice03_02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ✏️ Practice 3.2 - Python
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="Content">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Content
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-erd-understanding-and-operational-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. ERD Understanding and Operational Analysis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. ERD Understanding and Operational Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-assertions-about-the-erd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (1) Assertions about the ERD
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-split-pricing-scenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (2) Split Pricing Scenario
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-employee-tracking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (3) Employee Tracking
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-sql-querying" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. SQL Querying
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. SQL Querying">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-purchasing-costs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (1) Purchasing Costs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-expenditures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (2) Expenditures
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-current-inventory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (3) Current Inventory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-weekly-sales" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (4) Weekly Sales
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-planned-future-production" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (5) Planned Future Production
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-undelivered-raw-materials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (6) Undelivered Raw Materials
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-balance-sheet-balances-as-of-a-certain-date" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (7) Balance Sheet Balances as of a Certain Date
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Analysis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-popular-products" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (1) Popular products
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-inventory-planning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (2) Inventory Planning
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="muesli-erd-sql-1">Muesli - ERD &amp; SQL 1<a class="headerlink" href="#muesli-erd-sql-1" title="Permanent link">&para;</a></h1>
+<h2 id="1-erd-understanding-and-operational-analysis">1. ERD Understanding and Operational Analysis<a class="headerlink" href="#1-erd-understanding-and-operational-analysis" title="Permanent link">&para;</a></h2>
+<p>Muesli Pty Ltd is a medium-sized company that manufactures and sells breakfast cereals to retailers.</p>
+<p>Refer to the ERD provided in the company's background section to answer the following 3 sub-questions.</p>
+<h3 id="1-assertions-about-the-erd">(1) Assertions about the ERD<a class="headerlink" href="#1-assertions-about-the-erd" title="Permanent link">&para;</a></h3>
+<p><strong>Q:</strong></p>
+<p>For each of the assertions below, critically discuss to what extent the database structure would imply that the assertion is true or false.</p>
+<p>Explain with reference to specific parts of the ERD to support your answers.</p>
+<p>(a) Customers pay entire invoices at once. There are no split or partial payments.</p>
+<p>(b) Production output is recorded only once, at the end of the production run.</p>
+<p><strong>A:</strong></p>
+<p>(a)
+Yes.</p>
+<p>Although the ERD does not explicitly show the cardinality from Sales Orders to Sales Invoices, the fact that the <strong>Sales Invoices entity has a single PK <code>Document_Number</code></strong> which is also a FK to the Sales Orders entity, implies that there is impossible for multiple sales invoices to have the same document number. </p>
+<p>Therefore, we can infer that the relationship between Sales Orders and Sales Invoices is one-to-one, which would imply that each sales order can only be associated with one sales invoice, and thus customers would have to pay entire invoices at once, with no split or partial payments.</p>
+<p>If there were a possibility of split or partial payments, we would expect that different sales invoices could be associated with the same sales order, which would require another PK in the Sales Invoices entity to make each invoice unique.</p>
+<p>(b)
+No.</p>
+<p>The cardinality between Production Orders and Production Yields is <strong>required one-to-many</strong>, which implies that one production order can be associated with multiple production yields. </p>
+<p>This suggests that production output can be recorded multiple times for a single production run, which would allow for recording production output at different stages of the production process, rather than only at the end of the production run.</p>
+<h3 id="2-split-pricing-scenario">(2) Split Pricing Scenario<a class="headerlink" href="#2-split-pricing-scenario" title="Permanent link">&para;</a></h3>
+<p><strong>Q:</strong></p>
+<p>The edible foodstuffs vendor is offering the company fixed-volume pricing.</p>
+<p>For example:</p>
+<ul>
+<li>If we order in multiples of 10,000 kg, the price would be $4 per kg.</li>
+<li>If we order less than 10,000 kg, the price would be $4.20 per kg.</li>
+<li>However, if we order 24,320 kg, then the first 20,000 kg would cost $4 per kg, and the remaining 4,320 kg would cost $4.20 per kg.</li>
+</ul>
+<p>Under this new split pricing scenario, can the <strong>existing</strong> database structure record these variations in quantity and pricing, or would modifications to the schema be required for the company to take advantage of this? Explain why or why not.</p>
+<p><strong>A:</strong></p>
+<p>The current database structure <strong>CAN</strong> record the variations in quantity and pricing under the new split pricing scenario, without requiring modifications to the schema. Since the <code>Purchase_Order_Items</code> entity has combined PKs of <code>Document_Number</code> and <code>Item_Number</code>, but <code>Material_Code</code> is not part of the PK, it allows for multiple purchase order items to have the same material code but different item numbers.</p>
+<p>For example, if we order 24,320 kg of a particular product, this could be recorded as two separate purchase order items within the same purchase order for the same material code, which is allowed by the current schema:</p>
+<table>
+<thead>
+<tr>
+<th>Document Number</th>
+<th>Item Number</th>
+<th>Material Code</th>
+<th>Price</th>
+<th>Order_Quantity</th>
+<th>Receive_Quantity</th>
+<th>Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0000001</td>
+<td>1</td>
+<td>BB-R02</td>
+<td>$4.00</td>
+<td>20,000</td>
+<td>20,000</td>
+<td>kg</td>
+</tr>
+<tr>
+<td>0000001</td>
+<td>2</td>
+<td>BB-R02</td>
+<td>$4.20</td>
+<td>4,320</td>
+<td>4,320</td>
+<td>kg</td>
+</tr>
+</tbody>
+</table>
+<p>However, current schema is not perfect for this scenario, as it also allows the same price for the same material code within the same purchase order, as long as the item numbers are different. For example:</p>
+<table>
+<thead>
+<tr>
+<th>Document Number</th>
+<th>Item Number</th>
+<th>Material Code</th>
+<th>Price</th>
+<th>Order_Quantity</th>
+<th>Receive_Quantity</th>
+<th>Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0000002</td>
+<td>1</td>
+<td>BB-R02</td>
+<td>$4.00</td>
+<td>10,000</td>
+<td>10,000</td>
+<td>kg</td>
+</tr>
+<tr>
+<td>0000002</td>
+<td>2</td>
+<td>BB-R02</td>
+<td>$4.00</td>
+<td>10,000</td>
+<td>10,000</td>
+<td>kg</td>
+</tr>
+</tbody>
+</table>
+<p>So, it is better to remove the <code>Item_Number</code> from the PK, and add <code>Material_Code</code> and <code>Price</code> to the PK, i.e., the new combined PK would be <code>Document_Number</code>, <code>Material_Code</code>, and <code>Price</code>. This would allow for multiple purchase order items to have the same material code but different prices, which is necessary to accurately record the split pricing scenario. For example, the 24,320 kg and 20,000 kg orders could be recorded as follows:</p>
+<table>
+<thead>
+<tr>
+<th>Document Number</th>
+<th>Material Code</th>
+<th>Price</th>
+<th>Order_Quantity</th>
+<th>Receive_Quantity</th>
+<th>Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0000001</td>
+<td>BB-R02</td>
+<td>$4.00</td>
+<td>20,000</td>
+<td>20,000</td>
+<td>kg</td>
+</tr>
+<tr>
+<td>0000001</td>
+<td>BB-R02</td>
+<td>$4.20</td>
+<td>4,320</td>
+<td>4,320</td>
+<td>kg</td>
+</tr>
+<tr>
+<td>0000002</td>
+<td>BB-R02</td>
+<td>$4.00</td>
+<td>20,000</td>
+<td>20,000</td>
+<td>kg</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-employee-tracking">(3) Employee Tracking<a class="headerlink" href="#3-employee-tracking" title="Permanent link">&para;</a></h3>
+<p><strong>Q:</strong></p>
+<p>Some inventory recently went missing from the warehouse. The supplier confirms that it was sent and the shipping company confirms it was delivered. Both provided documented evidence supporting these facts.</p>
+<p>The system shows the inventory as having been delivered, but warehouse counts have not reflected this inventory being in stock.</p>
+<p>In order to increase accountability, the company wants to add an Employee entity and associated relationships to track who received deliveries from suppliers, and also who enters warehouse counts.</p>
+<p>Assuming an Employee entity has already been created with PK "Employee ID" and other relevant information about employees, describe how to correctly add relationships with the other existing entities to achieve the desired accountability.</p>
+<p>Drawing a new ERD (or part of the ERD) is optional. You will be scored primarily on your explanation - your new ERD is only there to support your explanation.</p>
+<p><strong>A:</strong></p>
+<p>The parts of new ERD:</p>
+<div style="text-align: center;">
+    <img src="../ERD_new.png" width="400">
+</div>
+
+<p>First, in <code>Inventory_Counts</code> entity, we can add a new <strong>required FK</strong> <code>Counted_By</code> that references the PK of the Employee entity - <code>Employee_ID</code>. This would make a <strong>required one-to-many</strong> relationship between <code>Employee</code> and <code>Inventory_Counts</code>, which would allow us to track which employee is responsible for each inventory count. The <code>Inventory_Counts</code> entity clearly lables the material, quantity, and date of the inventory count. So, when employees sign their name to the inventory count, they are confirming that they have verified the material, quantity, and date of the inventory count, which would enhance accountability.</p>
+<p>Second, in <code>Purchase_Orders</code> entity, we can add a new <strong>required FK</strong> <code>Received_By</code> that references the PK of the Employee entity - <code>Employee_ID</code>. This would make a <strong>required one-to-many</strong> relationship between <code>Employee</code> and <code>Purchase_Orders</code>, which would allow us to track which employee is responsible for receiving deliveries from suppliers. By joining the <code>Purchase_Orders</code> entity with the <code>Purchase_Order_Items</code> entity, employees can check the specific materials, quantities, and date of each purchase order they received. So, when employees sign their name to the purchase order, they are confirming that they have verified the materials, quantities, and received date of the purchase order, which would enhance accountability.</p>
+<h2 id="2-sql-querying">2. SQL Querying<a class="headerlink" href="#2-sql-querying" title="Permanent link">&para;</a></h2>
+<p>Using the database, develop and test <strong>ONE</strong> SQL query for each of the following business intents to support Muesli Pty Ltd. The information retrieved when running each SQL, should be easily usable to inform the stated intent (i.e., minimal additional sorting or calculations would be required to determine an answer).</p>
+<p>Use SQL comments before or within your query to:</p>
+<ul>
+<li>Document any assumptions</li>
+<li>Cite any part of the code obtained from a 3rd party source</li>
+</ul>
+<h3 id="1-purchasing-costs">(1) Purchasing Costs<a class="headerlink" href="#1-purchasing-costs" title="Permanent link">&para;</a></h3>
+<p><strong>Q:</strong></p>
+<p>Weighted average purchase cost of each raw material</p>
+<ul>
+<li>Only include purchases made in the prior 13 weeks (a rolling quarter), excluding the current week.</li>
+<li>Per kg for edible food items.</li>
+<li>Per piece for packaging boxes and bags.</li>
+</ul>
+<p><strong>A:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">WITH</span>
+<span class="n">Purchases_Quarter</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span>
+<span class="w">        </span><span class="n">POI</span><span class="p">.</span><span class="n">Material_Code</span><span class="p">,</span>
+<span class="w">        </span><span class="k">SUM</span><span class="p">(</span><span class="n">POI</span><span class="p">.</span><span class="n">Order_Quantity</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Total_Quantity</span><span class="p">,</span>
+<span class="w">        </span><span class="k">SUM</span><span class="p">(</span><span class="n">POI</span><span class="p">.</span><span class="n">Order_Quantity</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">POI</span><span class="p">.</span><span class="n">Price</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">POI</span><span class="p">.</span><span class="n">Order_Quantity</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Weighted_Average_Cost</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">Purchase_Order_Items</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">POI</span>
+<span class="w">    </span><span class="k">JOIN</span><span class="w"> </span><span class="n">Purchase_Orders</span><span class="w">      </span><span class="k">AS</span><span class="w"> </span><span class="n">PO</span><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">POI</span><span class="p">.</span><span class="n">Document_Number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PO</span><span class="p">.</span><span class="n">Document_Number</span>
+<span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">PO</span><span class="p">.</span><span class="n">Order_Date</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">DATEADD</span><span class="p">(</span><span class="n">WEEK</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">13</span><span class="p">,</span><span class="w"> </span><span class="n">DATETRUNC</span><span class="p">(</span><span class="n">WEEK</span><span class="p">,</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="p">))</span>
+<span class="w">    </span><span class="k">AND</span><span class="w">   </span><span class="n">PO</span><span class="p">.</span><span class="n">Order_Date</span><span class="w"> </span><span class="o">&lt;</span><span class="w">  </span><span class="n">DATETRUNC</span><span class="p">(</span><span class="n">WEEK</span><span class="p">,</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="p">)</span>
+<span class="w">    </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">POI</span><span class="p">.</span><span class="n">Material_Code</span>
+<span class="p">)</span>
+<span class="k">SELECT</span><span class="w"> </span>
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">Material_Code</span><span class="p">,</span>
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">Material_Name</span><span class="p">,</span>
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">Unit_Size</span><span class="p">,</span>
+<span class="w">    </span><span class="k">COALESCE</span><span class="p">(</span><span class="n">PQ</span><span class="p">.</span><span class="n">Total_Quantity</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Total_Quantity</span><span class="p">,</span>
+<span class="w">    </span><span class="n">PQ</span><span class="p">.</span><span class="n">Weighted_Average_Cost</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">Materials</span><span class="w">              </span><span class="k">AS</span><span class="w"> </span><span class="n">M</span>
+<span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">Purchases_Quarter</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">PQ</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">M</span><span class="p">.</span><span class="n">Material_Code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PQ</span><span class="p">.</span><span class="n">Material_Code</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">M</span><span class="p">.</span><span class="n">Type_Code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ROH&#39;</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">M</span><span class="p">.</span><span class="n">Material_Code</span>
+<span class="p">;</span>
+</code></pre></div>
+<p>Note: This query is executed on 2026-03-21. If you run this query on a different date, the results may vary, because the database is continuously updated.</p>
+<div class="highlight"><pre><span></span><code>==================================================================================
+
+Material_Code  Material_Name     Unit_Size   Total_Quantity  Weighted_Average_Cost
+-------------  ----------------  ----------  --------------  ---------------------
+BB-P01         Large Box (1kg)   1 piece     724000.000      0.340000             
+BB-P02         Large Bag (1kg)   1 piece     724000.000      0.160000             
+BB-P03         Small Box (500g)  1 piece     770000.000      0.260000             
+BB-P04         Small Bag (500g)  1 piece     770000.000      0.140000             
+BB-R01         Nuts              1 kg        69700.000       2.091090             
+BB-R02         Blueberries       1 kg        66250.000       5.547335             
+BB-R03         Strawberries      1 kg        88000.000       5.496965             
+BB-R04         Raisins           1 kg        95800.000       1.266210             
+BB-R05         Wheat             1 kg        394630.000      1.101060             
+BB-R06         Oats              1 kg        394630.000      1.072052             
+((10 rows affected))
+</code></pre></div>
+<h3 id="2-expenditures">(2) Expenditures<a class="headerlink" href="#2-expenditures" title="Permanent link">&para;</a></h3>
+<p><strong>Q:</strong></p>
+<p>Year-to-date and month-to-date expenditure for each expense category.</p>
+<p><strong>A:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">WITH</span>
+<span class="n">Account_Expenditure</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span>
+<span class="w">        </span><span class="n">GLA</span><span class="p">.</span><span class="n">Account_Number</span><span class="p">,</span>
+<span class="w">        </span><span class="n">GLA</span><span class="p">.</span><span class="n">Account_Group</span><span class="p">,</span>
+<span class="w">        </span><span class="n">GLA</span><span class="p">.</span><span class="n">Account_Name</span><span class="p">,</span>
+<span class="w">        </span><span class="n">GLP</span><span class="p">.</span><span class="n">Posting_Date</span><span class="p">,</span>
+<span class="w">        </span><span class="k">CASE</span><span class="w"> </span>
+<span class="w">            </span><span class="k">WHEN</span><span class="w"> </span><span class="n">GLPE</span><span class="p">.</span><span class="n">DR_or_CR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;DR&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="n">GLPE</span><span class="p">.</span><span class="n">Amount</span>
+<span class="w">            </span><span class="k">ELSE</span><span class="w">                           </span><span class="n">GLPE</span><span class="p">.</span><span class="n">Amount</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span>
+<span class="w">        </span><span class="k">END</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Amount</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">GL_Accounts</span><span class="w">        </span><span class="k">AS</span><span class="w"> </span><span class="n">GLA</span>
+<span class="w">    </span><span class="k">JOIN</span><span class="w"> </span><span class="n">GL_Posting_Entries</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">GLPE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">GLA</span><span class="p">.</span><span class="n">Account_Number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GLPE</span><span class="p">.</span><span class="n">Account_Number</span>
+<span class="w">    </span><span class="k">JOIN</span><span class="w"> </span><span class="n">GL_Postings</span><span class="w">        </span><span class="k">AS</span><span class="w"> </span><span class="n">GLP</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">GLPE</span><span class="p">.</span><span class="n">Document_Number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GLP</span><span class="p">.</span><span class="n">Document_Number</span>
+<span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">GLA</span><span class="p">.</span><span class="n">Account_Group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;IS-Expenses&#39;</span><span class="w"> </span>
+<span class="p">),</span>
+<span class="n">Account_Expenditure_Year</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span>
+<span class="w">        </span><span class="n">Account_Number</span><span class="p">,</span>
+<span class="w">        </span><span class="n">Account_Name</span><span class="p">,</span>
+<span class="w">        </span><span class="k">SUM</span><span class="p">(</span><span class="n">Amount</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Total_Expenditure</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">Account_Expenditure</span>
+<span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">Posting_Date</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">DATETRUNC</span><span class="p">(</span><span class="k">YEAR</span><span class="p">,</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="p">)</span><span class="w"> </span>
+<span class="w">    </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Account_Number</span><span class="p">,</span><span class="w"> </span><span class="n">Account_Name</span>
+<span class="p">),</span>
+<span class="n">Account_Expenditure_Month</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span>
+<span class="w">        </span><span class="n">Account_Number</span><span class="p">,</span>
+<span class="w">        </span><span class="n">Account_Name</span><span class="p">,</span>
+<span class="w">        </span><span class="k">SUM</span><span class="p">(</span><span class="n">Amount</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Total_Expenditure</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">Account_Expenditure</span>
+<span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">Posting_Date</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">DATETRUNC</span><span class="p">(</span><span class="k">MONTH</span><span class="p">,</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="p">)</span>
+<span class="w">    </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Account_Number</span><span class="p">,</span><span class="w"> </span><span class="n">Account_Name</span>
+<span class="p">)</span>
+<span class="k">SELECT</span><span class="w"> </span>
+<span class="w">    </span><span class="n">GLA</span><span class="p">.</span><span class="n">Account_Number</span><span class="p">,</span>
+<span class="w">    </span><span class="n">GLA</span><span class="p">.</span><span class="n">Account_Name</span><span class="p">,</span>
+<span class="w">    </span><span class="k">COALESCE</span><span class="p">(</span><span class="n">AEW</span><span class="p">.</span><span class="n">Total_Expenditure</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Total_Expenditure</span><span class="p">,</span>
+<span class="w">    </span><span class="s1">&#39;Year-to-Date&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">Period</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">GL_Accounts</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">GLA</span>
+<span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w">  </span><span class="n">Account_Expenditure_Year</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">AEW</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">GLA</span><span class="p">.</span><span class="n">Account_Number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AEW</span><span class="p">.</span><span class="n">Account_Number</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">GLA</span><span class="p">.</span><span class="n">Account_Group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;IS-Expenses&#39;</span>
+
+<span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
+
+<span class="k">SELECT</span><span class="w"> </span>
+<span class="w">    </span><span class="n">GLA</span><span class="p">.</span><span class="n">Account_Number</span><span class="p">,</span>
+<span class="w">    </span><span class="n">GLA</span><span class="p">.</span><span class="n">Account_Name</span><span class="p">,</span>
+<span class="w">    </span><span class="k">COALESCE</span><span class="p">(</span><span class="n">AEM</span><span class="p">.</span><span class="n">Total_Expenditure</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Total_Expenditure</span><span class="p">,</span>
+<span class="w">    </span><span class="s1">&#39;Month-to-Date&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">Period</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">GL_Accounts</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">GLA</span>
+<span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w">  </span><span class="n">Account_Expenditure_Month</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">AEM</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">GLA</span><span class="p">.</span><span class="n">Account_Number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AEM</span><span class="p">.</span><span class="n">Account_Number</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">GLA</span><span class="p">.</span><span class="n">Account_Group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;IS-Expenses&#39;</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Account_Number</span><span class="p">,</span><span class="w"> </span><span class="k">Period</span><span class="w"> </span><span class="k">DESC</span>
+<span class="p">;</span>
+</code></pre></div>
+<p>Note: This query is executed on 2026-03-21. If you run this query on a different date, the results may vary, because the database is continuously updated.</p>
+<div class="highlight"><pre><span></span><code>================================================================================================
+
+Account_Number  Account_Name                                    Total_Expenditure  Period       
+--------------  ----------------------------------------------  -----------------  -------------
+0000211120      Depreciation Expenses: Building                 15000.00           Year-to-Date 
+0000211120      Depreciation Expenses: Building                 3750.00            Month-to-Date
+0000211130      Depreciation Expenses: Machinery and Equipment  665833.32          Year-to-Date 
+0000211130      Depreciation Expenses: Machinery and Equipment  167499.99          Month-to-Date
+0000400000      Consumption Raw Materials                       2104738.50         Year-to-Date 
+0000400000      Consumption Raw Materials                       521277.34          Month-to-Date
+0000472000      Shipping costs                                  57000.00           Year-to-Date 
+0000472000      Shipping costs                                  15000.00           Month-to-Date
+0000476900      Interest expenses                               91416.90           Year-to-Date 
+0000476900      Interest expenses                               18242.80           Month-to-Date
+0000477001      Advertising North-01                            0.00               Year-to-Date 
+0000477001      Advertising North-01                            0.00               Month-to-Date
+0000477002      Advertising South-01                            0.00               Year-to-Date 
+0000477002      Advertising South-01                            0.00               Month-to-Date
+0000477003      Advertising West-01                             0.00               Year-to-Date 
+0000477003      Advertising West-01                             0.00               Month-to-Date
+0000477004      Advertising North-02                            0.00               Year-to-Date 
+0000477004      Advertising North-02                            0.00               Month-to-Date
+0000477005      Advertising South-02                            0.00               Year-to-Date 
+0000477005      Advertising South-02                            0.00               Month-to-Date
+0000477006      Advertising West-02                             0.00               Year-to-Date 
+0000477006      Advertising West-02                             0.00               Month-to-Date
+0000477007      Advertising North-03                            0.00               Year-to-Date 
+0000477007      Advertising North-03                            0.00               Month-to-Date
+0000477008      Advertising South-03                            0.00               Year-to-Date 
+0000477008      Advertising South-03                            0.00               Month-to-Date
+0000477009      Advertising West-03                             0.00               Year-to-Date 
+0000477009      Advertising West-03                             0.00               Month-to-Date
+0000477010      Advertising North-04                            0.00               Year-to-Date 
+0000477010      Advertising North-04                            0.00               Month-to-Date
+0000477011      Advertising South-04                            0.00               Year-to-Date 
+0000477011      Advertising South-04                            0.00               Month-to-Date
+0000477012      Advertising West-04                             0.00               Year-to-Date 
+0000477012      Advertising West-04                             0.00               Month-to-Date
+0000477013      Advertising North-05                            0.00               Year-to-Date 
+0000477013      Advertising North-05                            0.00               Month-to-Date
+0000477014      Advertising South-05                            0.00               Year-to-Date 
+0000477014      Advertising South-05                            0.00               Month-to-Date
+0000477015      Advertising West-05                             0.00               Year-to-Date 
+0000477015      Advertising West-05                             0.00               Month-to-Date
+0000477016      Advertising North-06                            0.00               Year-to-Date 
+0000477016      Advertising North-06                            0.00               Month-to-Date
+0000477017      Advertising South-06                            0.00               Year-to-Date 
+0000477017      Advertising South-06                            0.00               Month-to-Date
+0000477018      Advertising West-06                             0.00               Year-to-Date 
+0000477018      Advertising West-06                             0.00               Month-to-Date
+0000477019      Advertising North-11                            0.00               Year-to-Date 
+0000477019      Advertising North-11                            0.00               Month-to-Date
+0000477020      Advertising South-11                            0.00               Year-to-Date 
+0000477020      Advertising South-11                            0.00               Month-to-Date
+0000477021      Advertising WEST-11                             0.00               Year-to-Date 
+0000477021      Advertising WEST-11                             0.00               Month-to-Date
+0000477022      Advertising North-12                            0.00               Year-to-Date 
+0000477022      Advertising North-12                            0.00               Month-to-Date
+0000477023      Advertising South-12                            0.00               Year-to-Date 
+0000477023      Advertising South-12                            0.00               Month-to-Date
+0000477024      Advertising West-12                             0.00               Year-to-Date 
+0000477024      Advertising West-12                             0.00               Month-to-Date
+0000477025      Advertising North-13                            0.00               Year-to-Date 
+0000477025      Advertising North-13                            0.00               Month-to-Date
+0000477026      Advertising South-13                            0.00               Year-to-Date 
+0000477026      Advertising South-13                            0.00               Month-to-Date
+0000477027      Advertising West-13                             0.00               Year-to-Date 
+0000477027      Advertising West-13                             0.00               Month-to-Date
+0000477028      Advertising North-14                            0.00               Year-to-Date 
+0000477028      Advertising North-14                            0.00               Month-to-Date
+0000477029      Advertising South-14                            0.00               Year-to-Date 
+0000477029      Advertising South-14                            0.00               Month-to-Date
+0000477030      Advertising West-14                             0.00               Year-to-Date 
+0000477030      Advertising West-14                             0.00               Month-to-Date
+0000477031      Advertising North-15                            0.00               Year-to-Date 
+0000477031      Advertising North-15                            0.00               Month-to-Date
+0000477032      Advertising South-15                            0.00               Year-to-Date 
+0000477032      Advertising South-15                            0.00               Month-to-Date
+0000477033      Advertising West-15                             0.00               Year-to-Date 
+0000477033      Advertising West-15                             0.00               Month-to-Date
+0000477034      Advertising North-16                            0.00               Year-to-Date 
+0000477034      Advertising North-16                            0.00               Month-to-Date
+0000477035      Advertising South-16                            0.00               Year-to-Date 
+0000477035      Advertising South-16                            0.00               Month-to-Date
+0000477036      Advertising West-16                             0.00               Year-to-Date 
+0000477036      Advertising West-16                             0.00               Month-to-Date
+0000478000      Lean Manufacturing Program Expenses             0.00               Year-to-Date 
+0000478000      Lean Manufacturing Program Expenses             0.00               Month-to-Date
+0000478100      Warehousing costs                               47500.00           Year-to-Date 
+0000478100      Warehousing costs                               14000.00           Month-to-Date
+0000500000      Direct Labor Costs                              240000.00          Year-to-Date 
+0000500000      Direct Labor Costs                              60000.00           Month-to-Date
+0000510000      Factory Overhead Expenses                       180000.00          Year-to-Date 
+0000510000      Factory Overhead Expenses                       45000.00           Month-to-Date
+0000520000      Sales, General and Administrative Expenses      480000.00          Year-to-Date 
+0000520000      Sales, General and Administrative Expenses      120000.00          Month-to-Date
+((92 rows affected))
+</code></pre></div>
+<h3 id="3-current-inventory">(3) Current Inventory<a class="headerlink" href="#3-current-inventory" title="Permanent link">&para;</a></h3>
+<p><strong>Q:</strong></p>
+<p>Currently available inventory for each product.</p>
+<p><strong>A:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="cm">/*</span>
+<span class="cm">Assumptions:According to the background infromation, staff count inventory of each product at the end of each day.</span>
+<span class="cm">So, it is reasonable to assume that at each day and each location, the inventory amounts are recorded for all products. </span>
+<span class="cm">Therefore, we can find the most recent inventory date for each product at each location.</span>
+<span class="cm">Also, we don&#39;t need to left join with the material table, because all the products are recorded in the inventory counts, even the ones with zero quantity.</span>
+<span class="cm">*/</span>
+
+<span class="k">SELECT</span>
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">Material_Code</span><span class="p">,</span>
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">Material_Name</span><span class="p">,</span>
+<span class="w">    </span><span class="k">SUM</span><span class="p">(</span><span class="n">IC</span><span class="p">.</span><span class="n">Closing_Quantity</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Available_Inventory</span><span class="w"> </span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">Materials</span><span class="w">        </span><span class="k">AS</span><span class="w"> </span><span class="n">M</span>
+<span class="k">JOIN</span><span class="w"> </span><span class="n">Inventory_Counts</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">IC</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">M</span><span class="p">.</span><span class="n">Material_Code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IC</span><span class="p">.</span><span class="n">Material_Code</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">Inventory_Date</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">Inventory_Date</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Inventory_Counts</span><span class="p">)</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">M</span><span class="p">.</span><span class="n">Material_Code</span><span class="p">,</span><span class="w"> </span><span class="n">M</span><span class="p">.</span><span class="n">Material_Name</span>
+<span class="k">HAVING</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">IC</span><span class="p">.</span><span class="n">Closing_Quantity</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">M</span><span class="p">.</span><span class="n">Material_Code</span>
+<span class="p">;</span>
+</code></pre></div>
+<p>Note: This query is executed on 2026-03-21. If you run this query on a different date, the results may vary, because the database is continuously updated.</p>
+<div class="highlight"><pre><span></span><code>==========================================================
+
+Material_Code  Material_Name           Available_Inventory
+-------------  ----------------------  -------------------
+BB-F01         500g Nut Muesli         18230.000          
+BB-F02         500g Blueberry Muesli   37002.000          
+BB-F05         500g Original Muesli    14346.000          
+BB-F13         1kg Strawberry Muesli   30210.000          
+BB-F14         1kg Raisin Muesli       19709.000          
+BB-F16         1kg Mixed Fruit Muesli  24486.000          
+((6 rows affected))
+</code></pre></div>
+<h3 id="4-weekly-sales">(4) Weekly Sales<a class="headerlink" href="#4-weekly-sales" title="Permanent link">&para;</a></h3>
+<p><strong>Q:</strong></p>
+<p>Revenue and Units sold for each product, for each week:</p>
+<ul>
+<li>Show the most recent weeks first</li>
+<li>Show whole weeks only, i.e., exclude the current week</li>
+<li>Identify each week with a date (e.g., the first day in the week), NOT a week number (1, 2, 3, ..., 52)</li>
+</ul>
+<p><strong>A:</strong></p>
+<p>Version 1:</p>
+<div class="highlight"><pre><span></span><code><span class="k">WITH</span>
+<span class="n">Sales_Data</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">SELECT</span>
+<span class="w">        </span><span class="n">DATETRUNC</span><span class="p">(</span><span class="n">WEEK</span><span class="p">,</span><span class="w"> </span><span class="n">Delivery_Date</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Week_Start_Date</span><span class="p">,</span>
+<span class="w">        </span><span class="n">M</span><span class="p">.</span><span class="n">Material_Code</span><span class="p">,</span>
+<span class="w">        </span><span class="n">M</span><span class="p">.</span><span class="n">Material_Name</span><span class="p">,</span>
+<span class="w">        </span><span class="n">SOI</span><span class="p">.</span><span class="n">Quantity</span><span class="p">,</span>
+<span class="w">        </span><span class="n">SOI</span><span class="p">.</span><span class="n">Price</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">Materials</span><span class="w">         </span><span class="k">AS</span><span class="w"> </span><span class="n">M</span>
+<span class="w">    </span><span class="k">JOIN</span><span class="w"> </span><span class="n">Sales_Order_Items</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">SOI</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">M</span><span class="p">.</span><span class="n">Material_Code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SOI</span><span class="p">.</span><span class="n">Material_Code</span>
+<span class="w">    </span><span class="k">JOIN</span><span class="w"> </span><span class="n">Sales_Orders</span><span class="w">      </span><span class="k">AS</span><span class="w"> </span><span class="n">SO</span><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">SOI</span><span class="p">.</span><span class="n">Document_Number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SO</span><span class="p">.</span><span class="n">Document_Number</span>
+<span class="p">)</span>
+<span class="k">SELECT</span>
+<span class="w">    </span><span class="n">Week_Start_Date</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Material_Code</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Material_Name</span><span class="p">,</span>
+<span class="w">    </span><span class="k">SUM</span><span class="p">(</span><span class="n">Quantity</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Units_Sold</span><span class="p">,</span>
+<span class="w">    </span><span class="k">SUM</span><span class="p">(</span><span class="n">Quantity</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Price</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Revenue</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">Sales_Data</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">Week_Start_Date</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">DATETRUNC</span><span class="p">(</span><span class="n">WEEK</span><span class="p">,</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="p">)</span><span class="w"> </span><span class="c1">-- Exclude current week</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Week_Start_Date</span><span class="p">,</span><span class="w"> </span><span class="n">Material_Code</span><span class="p">,</span><span class="w"> </span><span class="n">Material_Name</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Week_Start_Date</span><span class="w"> </span><span class="k">DESC</span><span class="p">,</span><span class="w"> </span><span class="n">Units_Sold</span><span class="w"> </span><span class="k">DESC</span>
+<span class="p">;</span>
+</code></pre></div>
+<p>Note: This query is executed on 2026-03-21. If you run this query on a different date, the results may vary, because the database is continuously updated.</p>
+<div class="highlight"><pre><span></span><code>=================================================================================
+
+Week_Start_Date  Material_Code  Material_Name           Units_Sold  Revenue      
+---------------  -------------  ----------------------  ----------  -------------
+2026-03-08       BB-F05         500g Original Muesli    33217.000   89685.900000 
+2026-03-08       BB-F01         500g Nut Muesli         32122.000   120136.280000
+2026-03-08       BB-F16         1kg Mixed Fruit Muesli  14094.000   83295.540000 
+2026-03-08       BB-F02         500g Blueberry Muesli   13447.000   74630.850000 
+2026-03-08       BB-F13         1kg Strawberry Muesli   6561.000    45664.560000 
+2026-03-08       BB-F14         1kg Raisin Muesli       716.000     3529.880000  
+2026-03-01       BB-F16         1kg Mixed Fruit Muesli  35006.000   206535.400000
+2026-03-01       BB-F05         500g Original Muesli    25612.000   69408.520000 
+2026-03-01       BB-F01         500g Nut Muesli         23710.000   91994.800000 
+2026-03-01       BB-F13         1kg Strawberry Muesli   13300.000   90839.000000 
+2026-03-01       BB-F02         500g Blueberry Muesli   10457.000   59395.760000 
+2026-03-01       BB-F14         1kg Raisin Muesli       2207.000    11012.930000 
+2026-02-22       BB-F02         500g Blueberry Muesli   25822.000   146668.960000
+2026-02-22       BB-F05         500g Original Muesli    25723.000   69709.330000 
+2026-02-22       BB-F14         1kg Raisin Muesli       16077.000   80224.230000 
+2026-02-22       BB-F01         500g Nut Muesli         5514.000    21394.320000 
+2026-02-22       BB-F16         1kg Mixed Fruit Muesli  1639.000    9670.100000  
+2026-02-15       BB-F01         500g Nut Muesli         30263.000   118630.960000
+2026-02-15       BB-F16         1kg Mixed Fruit Muesli  28730.000   166346.700000
+2026-02-15       BB-F02         500g Blueberry Muesli   24084.000   134388.720000
+2026-02-15       BB-F14         1kg Raisin Muesli       21748.000   104825.360000
+2026-02-15       BB-F05         500g Original Muesli    16695.000   44575.650000 
+2026-02-15       BB-F13         1kg Strawberry Muesli   8909.000    60848.470000 
+...              ...            ...                     ...         ...
+2025-08-03       BB-F16         1kg Mixed Fruit Muesli  17718.000   89830.260000 
+2025-08-03       BB-F01         500g Nut Muesli         14750.000   50150.000000 
+2025-08-03       BB-F14         1kg Raisin Muesli       11477.000   49465.870000 
+2025-08-03       BB-F02         500g Blueberry Muesli   11154.000   49523.760000 
+2025-08-03       BB-F13         1kg Strawberry Muesli   10590.000   55068.000000 
+2025-08-03       BB-F05         500g Original Muesli    7792.000    30388.800000 
+2025-07-27       BB-F16         1kg Mixed Fruit Muesli  12750.000   64642.500000 
+2025-07-27       BB-F05         500g Original Muesli    12095.000   47170.500000 
+2025-07-27       BB-F14         1kg Raisin Muesli       11293.000   48672.830000 
+2025-07-27       BB-F13         1kg Strawberry Muesli   8500.000    44200.000000 
+2025-07-27       BB-F02         500g Blueberry Muesli   4230.000    18781.200000 
+2025-07-20       BB-F02         500g Blueberry Muesli   24026.000   110279.340000
+2025-07-20       BB-F13         1kg Strawberry Muesli   17000.000   81600.000000 
+2025-07-20       BB-F01         500g Nut Muesli         16441.000   60831.700000 
+2025-07-20       BB-F05         500g Original Muesli    16025.000   66664.000000 
+2025-07-20       BB-F14         1kg Raisin Muesli       11353.000   47228.480000 
+2025-07-13       BB-F13         1kg Strawberry Muesli   25500.000   122400.000000
+2025-07-13       BB-F02         500g Blueberry Muesli   25500.000   117045.000000
+2025-07-13       BB-F01         500g Nut Muesli         23850.000   88245.000000 
+2025-07-13       BB-F05         500g Original Muesli    8500.000    35360.000000 
+2025-07-06       BB-F01         500g Nut Muesli         16970.000   84850.000000 
+2025-07-06       BB-F02         500g Blueberry Muesli   13242.000   57867.540000 
+2025-06-29       BB-F01         500g Nut Muesli         8500.000    42500.000000 
+((198 rows affected))
+</code></pre></div>
+<p>Version 2:</p>
+<div class="highlight"><pre><span></span><code><span class="k">WITH</span><span class="w"> </span>
+<span class="n">Week_Count</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">DATEDIFF</span><span class="p">(</span><span class="n">WEEK</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="k">MIN</span><span class="p">(</span><span class="n">Delivery_Date</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Sales_Orders</span><span class="p">),</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Weeks</span>
+<span class="p">),</span>
+<span class="n">Week_Numbers</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">n</span>
+<span class="w">    </span><span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">Week_Numbers</span>
+<span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">Weeks</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Week_Count</span><span class="p">)</span>
+<span class="p">),</span>
+<span class="n">Week_Dates</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">SELECT</span>
+<span class="w">        </span><span class="n">DATEADD</span><span class="p">(</span><span class="n">WEEK</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">DATETRUNC</span><span class="p">(</span><span class="n">WEEK</span><span class="p">,</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="p">))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Week_Start_Date</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">Week_Numbers</span>
+<span class="p">),</span>
+<span class="n">Week_Products</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">SELECT</span>
+<span class="w">        </span><span class="n">WD</span><span class="p">.</span><span class="n">Week_Start_Date</span><span class="p">,</span>
+<span class="w">        </span><span class="n">M</span><span class="p">.</span><span class="n">Material_Code</span><span class="p">,</span>
+<span class="w">        </span><span class="n">M</span><span class="p">.</span><span class="n">Material_Name</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">Week_Dates</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">WD</span>
+<span class="w">    </span><span class="k">CROSS</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">Materials</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">M</span>
+<span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">M</span><span class="p">.</span><span class="n">Material_Code</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">Material_Code</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Sales_Order_Items</span><span class="p">)</span>
+<span class="p">),</span>
+<span class="n">Sales_Data</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">SELECT</span>
+<span class="w">        </span><span class="n">DATETRUNC</span><span class="p">(</span><span class="n">WEEK</span><span class="p">,</span><span class="w"> </span><span class="n">Delivery_Date</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Week_Start_Date</span><span class="p">,</span>
+<span class="w">        </span><span class="n">M</span><span class="p">.</span><span class="n">Material_Code</span><span class="p">,</span>
+<span class="w">        </span><span class="n">M</span><span class="p">.</span><span class="n">Material_Name</span><span class="p">,</span>
+<span class="w">        </span><span class="n">SOI</span><span class="p">.</span><span class="n">Quantity</span><span class="p">,</span>
+<span class="w">        </span><span class="n">SOI</span><span class="p">.</span><span class="n">Price</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">Materials</span><span class="w">         </span><span class="k">AS</span><span class="w"> </span><span class="n">M</span>
+<span class="w">    </span><span class="k">JOIN</span><span class="w"> </span><span class="n">Sales_Order_Items</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">SOI</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">M</span><span class="p">.</span><span class="n">Material_Code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SOI</span><span class="p">.</span><span class="n">Material_Code</span>
+<span class="w">    </span><span class="k">JOIN</span><span class="w"> </span><span class="n">Sales_Orders</span><span class="w">      </span><span class="k">AS</span><span class="w"> </span><span class="n">SO</span><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">SOI</span><span class="p">.</span><span class="n">Document_Number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SO</span><span class="p">.</span><span class="n">Document_Number</span>
+<span class="p">),</span>
+<span class="n">Sales_Weekly</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">SELECT</span>
+<span class="w">        </span><span class="n">Week_Start_Date</span><span class="p">,</span>
+<span class="w">        </span><span class="n">Material_Code</span><span class="p">,</span>
+<span class="w">        </span><span class="n">Material_Name</span><span class="p">,</span>
+<span class="w">        </span><span class="k">SUM</span><span class="p">(</span><span class="n">Quantity</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Units_Sold</span><span class="p">,</span>
+<span class="w">        </span><span class="k">SUM</span><span class="p">(</span><span class="n">Quantity</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Price</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Revenue</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">Sales_Data</span>
+<span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">Week_Start_Date</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">DATETRUNC</span><span class="p">(</span><span class="n">WEEK</span><span class="p">,</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="p">)</span><span class="w"> </span><span class="c1">-- Exclude current week</span>
+<span class="w">    </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Week_Start_Date</span><span class="p">,</span><span class="w"> </span><span class="n">Material_Code</span><span class="p">,</span><span class="w"> </span><span class="n">Material_Name</span>
+<span class="p">)</span>
+<span class="k">SELECT</span><span class="w"> </span>
+<span class="w">    </span><span class="n">WD</span><span class="p">.</span><span class="n">Week_Start_Date</span><span class="p">,</span>
+<span class="w">    </span><span class="n">WD</span><span class="p">.</span><span class="n">Material_Code</span><span class="p">,</span>
+<span class="w">    </span><span class="n">WD</span><span class="p">.</span><span class="n">Material_Name</span><span class="p">,</span>
+<span class="w">    </span><span class="k">COALESCE</span><span class="p">(</span><span class="n">SW</span><span class="p">.</span><span class="n">Units_Sold</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Units_Sold</span><span class="p">,</span>
+<span class="w">    </span><span class="k">COALESCE</span><span class="p">(</span><span class="n">SW</span><span class="p">.</span><span class="n">Revenue</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Revenue</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">Week_Products</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">WD</span>
+<span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">Sales_Weekly</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">SW</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">WD</span><span class="p">.</span><span class="n">Week_Start_Date</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SW</span><span class="p">.</span><span class="n">Week_Start_Date</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">WD</span><span class="p">.</span><span class="n">Material_Code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SW</span><span class="p">.</span><span class="n">Material_Code</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">WD</span><span class="p">.</span><span class="n">Material_Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SW</span><span class="p">.</span><span class="n">Material_Name</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">WD</span><span class="p">.</span><span class="n">Week_Start_Date</span><span class="w"> </span><span class="k">DESC</span><span class="p">,</span><span class="w"> </span><span class="n">SW</span><span class="p">.</span><span class="n">Units_Sold</span><span class="w"> </span><span class="k">DESC</span>
+<span class="p">;</span>
+</code></pre></div>
+<p>Note: This query is executed on 2026-03-21. If you run this query on a different date, the results may vary, because the database is continuously updated.</p>
+<div class="highlight"><pre><span></span><code>=========================================================================================
+
+Week_Start_Date          Material_Code  Material_Name           Units_Sold  Revenue      
+-----------------------  -------------  ----------------------  ----------  -------------
+2026-03-08 00:00:00.000  BB-F05         500g Original Muesli    33217.000   89685.900000 
+2026-03-08 00:00:00.000  BB-F01         500g Nut Muesli         32122.000   120136.280000
+2026-03-08 00:00:00.000  BB-F16         1kg Mixed Fruit Muesli  14094.000   83295.540000 
+2026-03-08 00:00:00.000  BB-F02         500g Blueberry Muesli   13447.000   74630.850000 
+2026-03-08 00:00:00.000  BB-F13         1kg Strawberry Muesli   6561.000    45664.560000 
+2026-03-08 00:00:00.000  BB-F14         1kg Raisin Muesli       716.000     3529.880000  
+2026-03-01 00:00:00.000  BB-F16         1kg Mixed Fruit Muesli  35006.000   206535.400000
+2026-03-01 00:00:00.000  BB-F05         500g Original Muesli    25612.000   69408.520000 
+2026-03-01 00:00:00.000  BB-F01         500g Nut Muesli         23710.000   91994.800000 
+2026-03-01 00:00:00.000  BB-F13         1kg Strawberry Muesli   13300.000   90839.000000 
+2026-03-01 00:00:00.000  BB-F02         500g Blueberry Muesli   10457.000   59395.760000 
+2026-03-01 00:00:00.000  BB-F14         1kg Raisin Muesli       2207.000    11012.930000 
+2026-02-22 00:00:00.000  BB-F02         500g Blueberry Muesli   25822.000   146668.960000
+2026-02-22 00:00:00.000  BB-F05         500g Original Muesli    25723.000   69709.330000 
+2026-02-22 00:00:00.000  BB-F14         1kg Raisin Muesli       16077.000   80224.230000 
+2026-02-22 00:00:00.000  BB-F01         500g Nut Muesli         5514.000    21394.320000 
+2026-02-22 00:00:00.000  BB-F16         1kg Mixed Fruit Muesli  1639.000    9670.100000  
+2026-02-22 00:00:00.000  BB-F13         1kg Strawberry Muesli   0.000       0.000000     
+2026-02-15 00:00:00.000  BB-F01         500g Nut Muesli         30263.000   118630.960000
+2026-02-15 00:00:00.000  BB-F16         1kg Mixed Fruit Muesli  28730.000   166346.700000
+2026-02-15 00:00:00.000  BB-F02         500g Blueberry Muesli   24084.000   134388.720000
+2026-02-15 00:00:00.000  BB-F14         1kg Raisin Muesli       21748.000   104825.360000
+2026-02-15 00:00:00.000  BB-F05         500g Original Muesli    16695.000   44575.650000 
+2026-02-15 00:00:00.000  BB-F13         1kg Strawberry Muesli   8909.000    60848.470000 
+2026-02-08 00:00:00.000  BB-F01         500g Nut Muesli         35402.000   138775.840000
+2026-02-08 00:00:00.000  BB-F05         500g Original Muesli    32561.000   86937.870000 
+2026-02-08 00:00:00.000  BB-F14         1kg Raisin Muesli       21253.000   102439.460000
+2026-02-08 00:00:00.000  BB-F13         1kg Strawberry Muesli   19812.000   135315.960000
+2026-02-08 00:00:00.000  BB-F16         1kg Mixed Fruit Muesli  17992.000   104173.680000
+2026-02-08 00:00:00.000  BB-F02         500g Blueberry Muesli   0.000       0.000000     
+...                      ...            ...                     ...         ...
+2025-08-03 00:00:00.000  BB-F16         1kg Mixed Fruit Muesli  17718.000   89830.260000 
+2025-08-03 00:00:00.000  BB-F01         500g Nut Muesli         14750.000   50150.000000 
+2025-08-03 00:00:00.000  BB-F14         1kg Raisin Muesli       11477.000   49465.870000 
+2025-08-03 00:00:00.000  BB-F02         500g Blueberry Muesli   11154.000   49523.760000 
+2025-08-03 00:00:00.000  BB-F13         1kg Strawberry Muesli   10590.000   55068.000000 
+2025-08-03 00:00:00.000  BB-F05         500g Original Muesli    7792.000    30388.800000 
+2025-07-27 00:00:00.000  BB-F16         1kg Mixed Fruit Muesli  12750.000   64642.500000 
+2025-07-27 00:00:00.000  BB-F05         500g Original Muesli    12095.000   47170.500000 
+2025-07-27 00:00:00.000  BB-F14         1kg Raisin Muesli       11293.000   48672.830000 
+2025-07-27 00:00:00.000  BB-F13         1kg Strawberry Muesli   8500.000    44200.000000 
+2025-07-27 00:00:00.000  BB-F02         500g Blueberry Muesli   4230.000    18781.200000 
+2025-07-27 00:00:00.000  BB-F01         500g Nut Muesli         0.000       0.000000     
+2025-07-20 00:00:00.000  BB-F02         500g Blueberry Muesli   24026.000   110279.340000
+2025-07-20 00:00:00.000  BB-F13         1kg Strawberry Muesli   17000.000   81600.000000 
+2025-07-20 00:00:00.000  BB-F01         500g Nut Muesli         16441.000   60831.700000 
+2025-07-20 00:00:00.000  BB-F05         500g Original Muesli    16025.000   66664.000000 
+2025-07-20 00:00:00.000  BB-F14         1kg Raisin Muesli       11353.000   47228.480000 
+2025-07-20 00:00:00.000  BB-F16         1kg Mixed Fruit Muesli  0.000       0.000000     
+2025-07-13 00:00:00.000  BB-F13         1kg Strawberry Muesli   25500.000   122400.000000
+2025-07-13 00:00:00.000  BB-F02         500g Blueberry Muesli   25500.000   117045.000000
+2025-07-13 00:00:00.000  BB-F01         500g Nut Muesli         23850.000   88245.000000 
+2025-07-13 00:00:00.000  BB-F05         500g Original Muesli    8500.000    35360.000000 
+2025-07-13 00:00:00.000  BB-F14         1kg Raisin Muesli       0.000       0.000000     
+2025-07-13 00:00:00.000  BB-F16         1kg Mixed Fruit Muesli  0.000       0.000000     
+2025-07-06 00:00:00.000  BB-F01         500g Nut Muesli         16970.000   84850.000000 
+2025-07-06 00:00:00.000  BB-F02         500g Blueberry Muesli   13242.000   57867.540000 
+2025-07-06 00:00:00.000  BB-F05         500g Original Muesli    0.000       0.000000     
+2025-07-06 00:00:00.000  BB-F16         1kg Mixed Fruit Muesli  0.000       0.000000     
+2025-07-06 00:00:00.000  BB-F13         1kg Strawberry Muesli   0.000       0.000000     
+2025-07-06 00:00:00.000  BB-F14         1kg Raisin Muesli       0.000       0.000000     
+2025-06-29 00:00:00.000  BB-F01         500g Nut Muesli         8500.000    42500.000000 
+2025-06-29 00:00:00.000  BB-F13         1kg Strawberry Muesli   0.000       0.000000     
+2025-06-29 00:00:00.000  BB-F14         1kg Raisin Muesli       0.000       0.000000     
+2025-06-29 00:00:00.000  BB-F05         500g Original Muesli    0.000       0.000000     
+2025-06-29 00:00:00.000  BB-F02         500g Blueberry Muesli   0.000       0.000000     
+2025-06-29 00:00:00.000  BB-F16         1kg Mixed Fruit Muesli  0.000       0.000000     
+((222 rows affected))
+</code></pre></div>
+<h3 id="5-planned-future-production">(5) Planned Future Production<a class="headerlink" href="#5-planned-future-production" title="Permanent link">&para;</a></h3>
+<p><strong>Q:</strong></p>
+<p>The remaining, yet to be produced, production schedule.</p>
+<p><strong>A:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">WITH</span>
+<span class="n">Production_Process</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span>
+<span class="w">        </span><span class="n">PO</span><span class="p">.</span><span class="n">Document_Number</span><span class="p">,</span>
+<span class="w">        </span><span class="n">PO</span><span class="p">.</span><span class="n">Scheduled_Start</span><span class="p">,</span>
+<span class="w">        </span><span class="n">PO</span><span class="p">.</span><span class="n">Scheduled_End</span><span class="p">,</span>
+<span class="w">        </span><span class="n">PO</span><span class="p">.</span><span class="n">Planned_Quantity</span><span class="p">,</span>
+<span class="w">        </span><span class="k">CASE</span><span class="w"> </span>
+<span class="w">            </span><span class="k">WHEN</span><span class="w"> </span><span class="n">PY</span><span class="p">.</span><span class="n">Yield</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="n">PY</span><span class="p">.</span><span class="n">Yield</span>
+<span class="w">            </span><span class="k">ELSE</span><span class="w">                           </span><span class="mi">0</span>
+<span class="w">        </span><span class="k">END</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Produced_Quantity</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w">      </span><span class="n">Production_Orders</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">PO</span>
+<span class="w">    </span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">Production_Yields</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">PY</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">PO</span><span class="p">.</span><span class="n">Document_Number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PY</span><span class="p">.</span><span class="n">Document_Number</span>
+<span class="p">),</span>
+<span class="n">Production_Process_Total</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span>
+<span class="w">        </span><span class="n">Document_Number</span><span class="p">,</span>
+<span class="w">        </span><span class="n">Scheduled_Start</span><span class="p">,</span>
+<span class="w">        </span><span class="n">Scheduled_End</span><span class="p">,</span>
+<span class="w">        </span><span class="n">Planned_Quantity</span><span class="p">,</span>
+<span class="w">        </span><span class="k">SUM</span><span class="p">(</span><span class="n">Produced_Quantity</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Total_Produced</span><span class="p">,</span>
+<span class="w">        </span><span class="n">Planned_Quantity</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">Produced_Quantity</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Remaining_Quantity</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">Production_Process</span>
+<span class="w">    </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Document_Number</span><span class="p">,</span><span class="w"> </span><span class="n">Scheduled_Start</span><span class="p">,</span><span class="w"> </span><span class="n">Scheduled_End</span><span class="p">,</span><span class="w"> </span><span class="n">Planned_Quantity</span><span class="w"> </span>
+<span class="p">)</span>
+<span class="k">SELECT</span>
+<span class="w">    </span><span class="n">Document_Number</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Scheduled_Start</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Scheduled_End</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Planned_Quantity</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Total_Produced</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Remaining_Quantity</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">Production_Process_Total</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">Remaining_Quantity</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c1">-- Only include production orders that are not yet completed</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Scheduled_Start</span>
+</code></pre></div>
+<p>Note: This query is executed on 2026-03-21. If you run this query on a different date, the results may vary, because the database is continuously updated.</p>
+<div class="highlight"><pre><span></span><code>=====================================================================================================
+
+Document_Number  Scheduled_Start  Scheduled_End  Planned_Quantity  Total_Produced  Remaining_Quantity
+---------------  ---------------  -------------  ----------------  --------------  ------------------
+000001000953     2026-03-20       2026-03-24     51000.000         14345.000       36655.000         
+000001000955     2026-03-24       2026-03-25     18000.000         0.000           18000.000         
+000001000957     2026-03-25       2026-03-26     19000.000         0.000           19000.000         
+000001000959     2026-03-26       2026-03-30     37000.000         0.000           37000.000         
+((4 rows affected))
+</code></pre></div>
+<h3 id="6-undelivered-raw-materials">(6) Undelivered Raw Materials<a class="headerlink" href="#6-undelivered-raw-materials" title="Permanent link">&para;</a></h3>
+<p><strong>Q:</strong></p>
+<p>Relevant details about currently undelivered raw materials, including the number of days it's been since the items were ordered.</p>
+<p><strong>A:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
+<span class="w">    </span><span class="n">PO</span><span class="p">.</span><span class="n">Document_Number</span><span class="p">,</span>
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">Material_Code</span><span class="p">,</span>
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">Material_Name</span><span class="p">,</span>
+<span class="w">    </span><span class="n">PO</span><span class="p">.</span><span class="n">Order_Date</span><span class="p">,</span>
+<span class="w">    </span><span class="n">PO</span><span class="p">.</span><span class="n">Delivery_Date</span><span class="p">,</span>
+<span class="w">    </span><span class="n">PO</span><span class="p">.</span><span class="n">Vendor</span><span class="p">,</span>
+<span class="w">    </span><span class="n">POI</span><span class="p">.</span><span class="n">Order_Quantity</span><span class="p">,</span>
+<span class="w">    </span><span class="n">DATEDIFF</span><span class="p">(</span><span class="k">DAY</span><span class="p">,</span><span class="w"> </span><span class="n">PO</span><span class="p">.</span><span class="n">Order_Date</span><span class="p">,</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Days_Since_Ordered</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">Purchase_Orders</span><span class="w">      </span><span class="k">AS</span><span class="w"> </span><span class="n">PO</span>
+<span class="k">JOIN</span><span class="w"> </span><span class="n">Purchase_Order_Items</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">POI</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">PO</span><span class="p">.</span><span class="n">Document_Number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">POI</span><span class="p">.</span><span class="n">Document_Number</span>
+<span class="k">JOIN</span><span class="w"> </span><span class="n">Materials</span><span class="w">            </span><span class="k">AS</span><span class="w"> </span><span class="n">M</span><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">POI</span><span class="p">.</span><span class="n">Material_Code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">M</span><span class="p">.</span><span class="n">Material_Code</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">PO</span><span class="p">.</span><span class="n">Delivery_Date</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="n">PO</span><span class="p">.</span><span class="n">Delivery_Date</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NULL</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">PO</span><span class="p">.</span><span class="n">Order_Date</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</code></pre></div>
+<p>Note: This query is executed on 2026-03-21. If you run this query on a different date, the results may vary, because the database is continuously updated.</p>
+<div class="highlight"><pre><span></span><code>========================================================================================================================
+
+Document_Number  Material_Code  Material_Name  Order_Date  Delivery_Date  Vendor      Order_Quantity  Days_Since_Ordered
+---------------  -------------  -------------  ----------  -------------  ----------  --------------  ------------------
+((0 rows affected))
+</code></pre></div>
+<h3 id="7-balance-sheet-balances-as-of-a-certain-date">(7) Balance Sheet Balances as of a Certain Date<a class="headerlink" href="#7-balance-sheet-balances-as-of-a-certain-date" title="Permanent link">&para;</a></h3>
+<p><strong>Q:</strong></p>
+<p>The balance of each account as of close of business December 31st, for all balance sheet accounts (include the date of the last recorded transaction prior to, or on, December 31 st for each account).</p>
+<p><strong>A:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">WITH</span>
+<span class="n">BS_Journals1</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span>
+<span class="w">        </span><span class="n">GLA</span><span class="p">.</span><span class="n">Account_Number</span><span class="p">,</span>
+<span class="w">        </span><span class="n">GLA</span><span class="p">.</span><span class="n">Account_Name</span><span class="p">,</span>
+<span class="w">        </span><span class="n">GLA</span><span class="p">.</span><span class="n">Account_Group</span><span class="p">,</span>
+<span class="w">        </span><span class="n">GLP</span><span class="p">.</span><span class="n">Posting_Date</span><span class="p">,</span>
+<span class="w">        </span><span class="n">GLPE</span><span class="p">.</span><span class="n">DR_or_CR</span><span class="p">,</span>
+<span class="w">        </span><span class="n">GLPE</span><span class="p">.</span><span class="n">Amount</span><span class="p">,</span>
+<span class="w">        </span><span class="k">CASE</span>
+<span class="w">            </span><span class="k">WHEN</span><span class="w"> </span>
+<span class="w">                </span><span class="n">GLA</span><span class="p">.</span><span class="n">Account_Group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;BS-Assets&#39;</span><span class="w"> </span>
+<span class="w">                </span><span class="k">AND</span><span class="w"> </span>
+<span class="w">                </span><span class="k">LOWER</span><span class="p">(</span><span class="n">GLA</span><span class="p">.</span><span class="n">Account_Name</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%accumulated depreciation%&#39;</span><span class="w"> </span>
+<span class="w">            </span><span class="k">THEN</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">            </span><span class="k">ELSE</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span>
+<span class="w">        </span><span class="k">END</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Direction</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">GL_Accounts</span><span class="w">        </span><span class="k">AS</span><span class="w"> </span><span class="n">GLA</span>
+<span class="w">    </span><span class="k">JOIN</span><span class="w"> </span><span class="n">GL_Posting_Entries</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">GLPE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">GLA</span><span class="p">.</span><span class="n">Account_Number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GLPE</span><span class="p">.</span><span class="n">Account_Number</span>
+<span class="w">    </span><span class="k">JOIN</span><span class="w"> </span><span class="n">GL_Postings</span><span class="w">        </span><span class="k">AS</span><span class="w"> </span><span class="n">GLP</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">GLPE</span><span class="p">.</span><span class="n">Document_Number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GLP</span><span class="p">.</span><span class="n">Document_Number</span>
+<span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">Account_Group</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;BS-%&#39;</span>
+<span class="p">)</span>
+<span class="p">,</span>
+<span class="n">BS_Journals2</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span>
+<span class="w">        </span><span class="n">Account_Number</span><span class="p">,</span>
+<span class="w">        </span><span class="n">Account_Name</span><span class="p">,</span>
+<span class="w">        </span><span class="n">Account_Group</span><span class="p">,</span>
+<span class="w">        </span><span class="n">Posting_Date</span><span class="p">,</span>
+<span class="w">        </span><span class="k">CASE</span><span class="w"> </span>
+<span class="w">            </span><span class="k">WHEN</span><span class="w"> </span><span class="n">Direction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">DR_or_CR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;DR&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="n">Amount</span>
+<span class="w">            </span><span class="k">WHEN</span><span class="w"> </span><span class="n">Direction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">DR_or_CR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;CR&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="n">Amount</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span>
+<span class="w">            </span><span class="k">WHEN</span><span class="w"> </span><span class="n">Direction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">DR_or_CR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;DR&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="n">Amount</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span>
+<span class="w">            </span><span class="k">WHEN</span><span class="w"> </span><span class="n">Direction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">DR_or_CR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;CR&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="n">Amount</span>
+<span class="w">            </span><span class="k">ELSE</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">        </span><span class="k">END</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Signed_Amount</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">BS_Journals1</span>
+<span class="p">),</span>
+<span class="n">BS_Balance</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span>
+<span class="w">        </span><span class="n">Account_Number</span><span class="p">,</span>
+<span class="w">        </span><span class="n">Account_Name</span><span class="p">,</span>
+<span class="w">        </span><span class="n">Account_Group</span><span class="p">,</span>
+<span class="w">        </span><span class="k">SUM</span><span class="p">(</span><span class="n">Signed_Amount</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Account_Balance</span><span class="p">,</span>
+<span class="w">        </span><span class="k">MAX</span><span class="p">(</span><span class="n">Posting_Date</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Last_Transaction_Date</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">BS_Journals2</span>
+<span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">Posting_Date</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="s1">&#39;2025-12-31&#39;</span>
+<span class="w">    </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Account_Number</span><span class="p">,</span><span class="w"> </span><span class="n">Account_Name</span><span class="p">,</span><span class="w"> </span><span class="n">Account_Group</span>
+<span class="p">)</span>
+<span class="k">SELECT</span><span class="w"> </span>
+<span class="w">    </span><span class="n">GLA</span><span class="p">.</span><span class="n">Account_Number</span><span class="p">,</span>
+<span class="w">    </span><span class="n">GLA</span><span class="p">.</span><span class="n">Account_Name</span><span class="p">,</span>
+<span class="w">    </span><span class="n">GLA</span><span class="p">.</span><span class="n">Account_Group</span><span class="p">,</span>
+<span class="w">    </span><span class="k">COALESCE</span><span class="p">(</span><span class="n">BSB</span><span class="p">.</span><span class="n">Account_Balance</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">Account_Balance</span><span class="p">,</span>
+<span class="w">    </span><span class="n">BSB</span><span class="p">.</span><span class="n">Last_Transaction_Date</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">GL_Accounts</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">GLA</span>
+<span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">BS_Balance</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">BSB</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">GLA</span><span class="p">.</span><span class="n">Account_Number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BSB</span><span class="p">.</span><span class="n">Account_Number</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">GLA</span><span class="p">.</span><span class="n">Account_Group</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;BS-%&#39;</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">GLA</span><span class="p">.</span><span class="n">Account_Group</span><span class="p">,</span><span class="w"> </span><span class="n">GLA</span><span class="p">.</span><span class="n">Account_Number</span>
+<span class="p">;</span>
+</code></pre></div>
+<p>Note: This query is executed on 2026-03-21. If you run this query on a different date, the results may vary, because the database is continuously updated.</p>
+<div class="highlight"><pre><span></span><code>==========================================================================================================================
+
+Account_Number  Account_Name                                        Account_Group   Account_Balance  Last_Transaction_Date
+--------------  --------------------------------------------------  --------------  ---------------  ---------------------
+0000001000      Land                                                BS-Assets       500000.00        2025-06-30           
+0000002000      Buildings                                           BS-Assets       1500000.00       2025-06-30           
+0000002010      Accumulated Depreciation - Buildings                BS-Assets       32500.00         2025-12-26           
+0000011000      Machinery and equipment                             BS-Assets       26200000.00      2025-12-15           
+0000011010      Accumulated depreciation - machinery and equipment  BS-Assets       1366666.62       2025-12-26           
+0000113300      Bank Cash Account                                   BS-Assets       777078.93        2025-12-31           
+0000140000      Customers - Domestic Receivables                    BS-Assets       1234644.93       2025-12-31           
+0000300000      Raw materials                                       BS-Assets       492414.22        2025-12-31           
+0000792000      Finished goods                                      BS-Assets       226240.18        2025-12-31           
+0000070000      Common stock                                        BS-Equity       20000000.00      2025-06-30           
+0000113101      Bank Loan                                           BS-Liabilities  5786528.09       2025-12-15           
+0000160000      Accounts payable - Domestic                         BS-Liabilities  850241.50        2025-12-30           
+0000191100      GR/IR Clearing - External procurement               BS-Misc         0.00             2025-12-30           
+((13 rows affected))
+</code></pre></div>
+<h2 id="3-analysis">3. Analysis<a class="headerlink" href="#3-analysis" title="Permanent link">&para;</a></h2>
+<p>Use the information obtained from running your queries from Question 2, to answer the following questions.</p>
+<p>Make explicit reference to specific values retrieved from the data to support each answer.</p>
+<p>You may optionally include screenshots of the output from one or more queries if you feel that's easier; however a screenshot of the whole output without making reference to which of the specific values are relevant (which column and row), is not an answer.</p>
+<p><strong>DO NOT</strong> write any new queries, or alter your queries from Question 2.</p>
+<p>If you cannot support an answer based on the output from your Question 2 queries, your Question 2 queries probably aren't as useful as you thought - go improve them!</p>
+<h3 id="1-popular-products">(1) Popular products<a class="headerlink" href="#1-popular-products" title="Permanent link">&para;</a></h3>
+<p><strong>Q:</strong></p>
+<p>Which product(s) seem to be the most popular?</p>
+<p><strong>A:</strong></p>
+<p>If we look at the units sold of each product for the most recent 4 weeks, we can see that the popularity of each product varies a lot across different weeks. However, the 500g Original Muesli (BB-F05), 500g Nut Muesli (BB-F01), and 1kg Mixed Fruit Muesli (BB-F16) have relatively consistent performance across different weeks. They are in the top 3 for at least 3 out of the most recent 4 weeks, with respect to units sold. Also, in the most recent week, they are the top 3 products in terms of units sold, with 33,217 units sold for 500g Original Muesli (BB-F05), 32,122 units sold for 500g Nut Muesli (BB-F01), and 14,094 units sold for 1kg Mixed Fruit Muesli (BB-F16). Although the popularity varies, these three products can maintain relatively stable popularity.</p>
+<p>Note, this result is based on query excecution results as of 2026-03-21. If you run the same query on a different date, the results may vary, because the database is continuously updated.</p>
+<div class="highlight"><pre><span></span><code>=========================================================================================
+
+Week_Start_Date          Material_Code  Material_Name           Units_Sold  Revenue      
+-----------------------  -------------  ----------------------  ----------  -------------
+2026-03-08 00:00:00.000  BB-F05         500g Original Muesli    33217.000   89685.900000 
+2026-03-08 00:00:00.000  BB-F01         500g Nut Muesli         32122.000   120136.280000
+2026-03-08 00:00:00.000  BB-F16         1kg Mixed Fruit Muesli  14094.000   83295.540000 
+2026-03-08 00:00:00.000  BB-F02         500g Blueberry Muesli   13447.000   74630.850000 
+2026-03-08 00:00:00.000  BB-F13         1kg Strawberry Muesli   6561.000    45664.560000 
+2026-03-08 00:00:00.000  BB-F14         1kg Raisin Muesli       716.000     3529.880000  
+2026-03-01 00:00:00.000  BB-F16         1kg Mixed Fruit Muesli  35006.000   206535.400000
+2026-03-01 00:00:00.000  BB-F05         500g Original Muesli    25612.000   69408.520000 
+2026-03-01 00:00:00.000  BB-F01         500g Nut Muesli         23710.000   91994.800000 
+2026-03-01 00:00:00.000  BB-F13         1kg Strawberry Muesli   13300.000   90839.000000 
+2026-03-01 00:00:00.000  BB-F02         500g Blueberry Muesli   10457.000   59395.760000 
+2026-03-01 00:00:00.000  BB-F14         1kg Raisin Muesli       2207.000    11012.930000 
+2026-02-22 00:00:00.000  BB-F02         500g Blueberry Muesli   25822.000   146668.960000
+2026-02-22 00:00:00.000  BB-F05         500g Original Muesli    25723.000   69709.330000 
+2026-02-22 00:00:00.000  BB-F14         1kg Raisin Muesli       16077.000   80224.230000 
+2026-02-22 00:00:00.000  BB-F01         500g Nut Muesli         5514.000    21394.320000 
+2026-02-22 00:00:00.000  BB-F16         1kg Mixed Fruit Muesli  1639.000    9670.100000  
+2026-02-22 00:00:00.000  BB-F13         1kg Strawberry Muesli   0.000       0.000000     
+2026-02-15 00:00:00.000  BB-F01         500g Nut Muesli         30263.000   118630.960000
+2026-02-15 00:00:00.000  BB-F16         1kg Mixed Fruit Muesli  28730.000   166346.700000
+2026-02-15 00:00:00.000  BB-F02         500g Blueberry Muesli   24084.000   134388.720000
+2026-02-15 00:00:00.000  BB-F14         1kg Raisin Muesli       21748.000   104825.360000
+2026-02-15 00:00:00.000  BB-F05         500g Original Muesli    16695.000   44575.650000 
+2026-02-15 00:00:00.000  BB-F13         1kg Strawberry Muesli   8909.000    60848.470000 
+</code></pre></div>
+<h3 id="2-inventory-planning">(2) Inventory Planning<a class="headerlink" href="#2-inventory-planning" title="Permanent link">&para;</a></h3>
+<p><strong>Q:</strong></p>
+<p>Which product(s) are likely to have enough stock in inventory to support a week of sales, at the start of next week (April 6)?</p>
+<p><strong>A:</strong></p>
+<p>Combining the outputs from Question 2 (3) Current Inventory and Question 2 (4) Weekly Sales, we can see that the currently available inventory and the units sold of most recent week for each product are as follows:</p>
+<div class="highlight"><pre><span></span><code>==========================================================
+
+Material_Code  Material_Name           Available_Inventory
+-------------  ----------------------  -------------------
+BB-F01         500g Nut Muesli         18230.000          
+BB-F02         500g Blueberry Muesli   37002.000          
+BB-F05         500g Original Muesli    14346.000          
+BB-F13         1kg Strawberry Muesli   30210.000          
+BB-F14         1kg Raisin Muesli       19709.000          
+BB-F16         1kg Mixed Fruit Muesli  24486.000          
+((6 rows affected))
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>=================================================================================
+
+Week_Start_Date  Material_Code  Material_Name           Units_Sold  Revenue      
+---------------  -------------  ----------------------  ----------  -------------
+2026-03-08       BB-F05         500g Original Muesli    33217.000   89685.900000 
+2026-03-08       BB-F01         500g Nut Muesli         32122.000   120136.280000
+2026-03-08       BB-F16         1kg Mixed Fruit Muesli  14094.000   83295.540000 
+2026-03-08       BB-F02         500g Blueberry Muesli   13447.000   74630.850000 
+2026-03-08       BB-F13         1kg Strawberry Muesli   6561.000    45664.560000 
+2026-03-08       BB-F14         1kg Raisin Muesli       716.000     3529.880000  
+</code></pre></div>
+<p>Therefore, using the units sold of the most recent week as a proxy for the demand for each product, we can calculate the inventory coverage for each product by dividing the currently available inventory by the units sold of the most recent week:</p>
+<table>
+<thead>
+<tr>
+<th>Material_Code</th>
+<th>Material_Name</th>
+<th>Available_Inventory</th>
+<th>Units_Sold_Per_Week</th>
+<th>Inventory Coverage (weeks)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BB-F01</td>
+<td>500g Nut Muesli</td>
+<td>18230.000</td>
+<td>32122.000</td>
+<td>0.57</td>
+</tr>
+<tr>
+<td>BB-F02</td>
+<td>500g Blueberry Muesli</td>
+<td>37002.000</td>
+<td>13447.000</td>
+<td>2.75</td>
+</tr>
+<tr>
+<td>BB-F05</td>
+<td>500g Original Muesli</td>
+<td>14346.000</td>
+<td>33217.000</td>
+<td>0.43</td>
+</tr>
+<tr>
+<td>BB-F13</td>
+<td>1kg Strawberry Muesli</td>
+<td>30210.000</td>
+<td>6561.000</td>
+<td>4.60</td>
+</tr>
+<tr>
+<td>BB-F14</td>
+<td>1kg Raisin Muesli</td>
+<td>19709.000</td>
+<td>716.000</td>
+<td>27.53</td>
+</tr>
+<tr>
+<td>BB-F16</td>
+<td>1kg Mixed Fruit Muesli</td>
+<td>24486.000</td>
+<td>14094.000</td>
+<td>1.74</td>
+</tr>
+</tbody>
+</table>
+<p>Based on the inventory coverage calculated above, we can see that, the 500g Blueberry Muesli (BB-F02), 1kg Strawberry Muesli (BB-F13), 1kg Raisin Muesli (BB-F14), and 1kg Mixed Fruit Muesli (BB-F16) are likely to have enough stock in inventory to support a week of sales at the start of next week (April 6), as their inventory coverage is greater than 1 week. However, the 500g Nut Muesli (BB-F01) and 500g Original Muesli (BB-F05) are likely to not have enough stock in inventory to support a week of sales at the start of next week (April 6), as their inventory coverage is less than 1 week.</p>
+<p>Note, this result is based on query excecution results as of 2026-03-21. If you run the same query on a different date, the results may vary, because the database is continuously updated.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.expand", "navigation.tracking", "content.code.copy", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
